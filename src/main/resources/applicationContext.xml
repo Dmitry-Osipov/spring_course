@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- Чтобы не хардкодить значения для property, мы создали конфиг, из которого будем брать значение.
+    Подключение конфига: -->
+    <context:property-placeholder location="classpath:myApp.properties" />
+
+    <!-- Spring Bean (или просто Bean) - это объект, который создаётся и управляется Spring Container -->
+    <!-- Вызываем class по id -->
+    <bean id="myPet" class="spring_introduction.Cat" />
+
+    <!-- Если конструктор имеет аргументы, то их требуется передать с помощью тега constructor-arg -->
+    <bean id="myPerson" class="spring_introduction.Person">
+        <!-- Создание зависимости через конструктор -->
+        <!-- id в зависимостях обязательно должны совпадать со ссылкой -->
+        <!-- <constructor-arg ref="myPet" /> -->
+
+        <!-- Создание зависимости через сеттер -->
+        <!-- Важно давать грамотный нэйминг для атрибутов класса + указывать верное имя в property, ибо именно оно и
+        использует сеттер -->
+        <property name="pet" ref="myPet" />
+
+        <!-- Также можно не давать ссылку на экземпляр класса, а передавать значение с помощью value -->
+        <property name="surname" value="${person.surname}" />
+        <property name="age" value="${person.age}" />
+    </bean>
+
+</beans>
