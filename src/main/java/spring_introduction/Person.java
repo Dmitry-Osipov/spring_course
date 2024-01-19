@@ -1,14 +1,21 @@
 package spring_introduction;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component("personBean")
 public class Person {
     private Pet pet;
     private String surname;
     private int age;
 
-    public Person() {
-        System.out.println("Использовался конструктор без аргументов");
-    }
+//    public Person() {
+//        System.out.println("Использовался конструктор без аргументов");
+//    }
 
+    @Autowired  // Автоматическое внедрение зависимостей благодаря аннотации Autowired. Начиная с версии Spring 7, при
+    // наличии у класса одного конструктора, можно не указывать аннотацию Autowired, ибо Spring будет внедрять
+    // зависимость на одном этом конструкторе.
     public Person(Pet pet) {
         System.out.println("Использовался конструктор с аргументом");
         this.pet = pet;
