@@ -2,6 +2,7 @@ package spring_introduction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component("personBean")
@@ -12,7 +13,12 @@ public class Person {
 //    // выбрасывается исключение. Предотвратить выброс данного исключения можно, конкретно указав, какой бин должен
 //    // быть внедрён. Для этого и существует аннотация Qualifier.
     private Pet pet;
+
+    @Value("${person.surname}")  // Для внедрения строк и других значений можно использовать аннотацию Value. В этом
+    // случае в сеттерах нет необходимости, как это было при конфигурации с помощью XML.
     private String surname;
+
+    @Value("${person.age}")  // Всегда требуется передавать строку.
     private int age;
 
     public Person() {

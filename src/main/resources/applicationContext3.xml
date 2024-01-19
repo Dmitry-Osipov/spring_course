@@ -10,4 +10,7 @@
     <!-- Указываем пакет, в котором будем искать аннотацию -->
     <context:component-scan base-package="spring_introduction" />
 
+    <!-- Теперь Spring знает, где находится наш конфиг-файл -->
+    <context:property-placeholder location="classpath:myApp.properties" />
+
 </beans>
