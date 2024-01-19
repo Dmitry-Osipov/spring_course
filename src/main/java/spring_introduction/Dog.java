@@ -1,5 +1,8 @@
 package spring_introduction;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Dog implements Pet {
     public Dog() {
         System.out.println("Создание собаки через конструктор");
