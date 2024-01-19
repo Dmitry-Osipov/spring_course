@@ -11,6 +11,6 @@
      является общим для всех, кто запросит его у спринга; подходит для stateless объектов.
       Также есть ещё один Scope - Prototype. Его особенности: создаётся только после обращения к спрингу с помощью
       метода getBean; для каждого такого обращения создаётся новый бин в спринге; подходит для stateful объектов. -->
-    <bean id="myPet" class="spring_introduction.Dog" scope="prototype" />
+    <bean id="myPet" class="spring_introduction.Dog" init-method="init" destroy-method="destroy" scope="prototype" />
 
 </beans>
