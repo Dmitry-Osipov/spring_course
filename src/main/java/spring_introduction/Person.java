@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 
 @Component("personBean")
 public class Person {
+    @Autowired  // Под капотом Spring внедрит зависимость, используя рефлексию. Данный вариант не является
+    // рекомендуемым.
     private Pet pet;
     private String surname;
     private int age;
@@ -39,8 +41,8 @@ public class Person {
         this.age = age;
     }
 
-    @Autowired  // Необязательно эту аннотацию подставлять именно к сеттеру. По факту её можно использовать с любым
-    // методом.
+//    @Autowired  // Необязательно эту аннотацию подставлять именно к сеттеру. По факту её можно использовать с любым
+//    // методом.
     public void setPet(Pet pet) {
         System.out.println("Использовался сеттер животного");
         this.pet = pet;
