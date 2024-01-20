@@ -8,8 +8,15 @@ public class Test5 {
                 new AnnotationConfigApplicationContext(MyConfig.class);  // Ранее мы создавали контекст, используя XML,
         // но т.к. теперь мы используем аннотации, нам понадобился новый класс.
 
+        Pet cat = context.getBean("catBean", Pet.class);
+        Pet newCat = context.getBean("catBean", Pet.class);
+        cat.say();
+        System.out.println(cat == newCat);
+
         Person person = context.getBean("personBean", Person.class);
+        Person newPerson = context.getBean("personBean", Person.class);
         person.callYourPet();
+        System.out.println(person == newPerson);
 
         context.close();
     }

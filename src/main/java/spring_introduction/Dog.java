@@ -5,7 +5,7 @@ import jakarta.annotation.PreDestroy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component  // Если не производится сканирование пакета, то и от аннотации Component смысла нет.
 @Scope("prototype")  // Для указания скопа по умолчанию можно ничего не писать.
 public class Dog implements Pet {
     public Dog() {
