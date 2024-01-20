@@ -17,6 +17,7 @@ public class Test5 {
         Person newPerson = context.getBean("personBean", Person.class);
         person.callYourPet();
         System.out.println(person == newPerson);
+        System.out.println(person.getSurname() + " " + person.getAge());
 
         context.close();
     }
