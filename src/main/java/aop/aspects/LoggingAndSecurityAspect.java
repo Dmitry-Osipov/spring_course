@@ -1,14 +1,14 @@
 package aop.aspects;
 
-import aop.AbstractLibrary;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 @Component
 @Aspect  // Аннотация говорит о том, что это не простой класс, а Aspect. Aspect - это класс, отвечающий за сквозную.
 // функциональность.
-public class LoggingAspect {
+public class LoggingAndSecurityAspect {
     // Advice типы:
     // * Before - выполняется до метода с основной логикой;
     // * After returning - выполняется только после нормального окончания метода с основной логикой;
@@ -23,17 +23,22 @@ public class LoggingAspect {
     // пример: public void get*(String);
     // * параметры и тип параметров - .. (обязательный параметр) - пример: public Integer calculateSum(..);
     // * исключение - просто не указать исключение (необязательный параметр).
+    @Pointcut("execution(* get*())")  // При смене pointcut выражения его требуется поменять лишь здесь, ибо всё, что
+    // ниже прописано с именем данного метода - лишь ссылки.
+    private void allGetMethods() {}  // Объявили pointcut. Плюсы такого подхода: возможность использования созданного
+    // pointcut для множества advice; возможность быстрого изменения pointcut выражения для множества advice;
+    // возможность комбинирования pointcut.
 
-    @Before("execution(public void getBook(aop.Book))")  // Это pointcut - выражение, когда должен быть применён Advice.
+    @Before("allGetMethods()")  // Это pointcut - выражение, когда должен быть применён Advice.
     // Если мы используем в качестве параметра кастомный класс, то требуется прописать его название полностью
     // (пакет + название класса).
-    public void beforeGetBookAdvice() {  // Advice - это метод, который находится в Aspect-классе. Он определяет, что
+    public void beforeGetLoggingAdvice() {  // Advice - это метод, который находится в Aspect-классе. Он определяет, что
         // должно произойти при вызове метода getBook.
-        System.out.println("beforeGetBookAdvice: попытка получить книгу");
+        System.out.println("beforeGetBookAdvice: попытка получить книгу/журнал");
     }
 
-    @Before("execution(public * returnBook())")  // Данное выражение сработает на любой тип возвращаемых данных.
-    public void beforeReturnBook() {
-        System.out.println("beforeReturnBook: попытка вернуть книгу");
+    @Before("allGetMethods()")
+    public void beforeGetSecurityAdvice() {
+        System.out.println("beforeGetSecurityAdvice: проверка прав на получение книги/журнала");
     }
 }
