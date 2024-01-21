@@ -3,12 +3,14 @@ package aop.aspects;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
 @Aspect  // Аннотация говорит о том, что это не простой класс, а Aspect. Aspect - это класс, отвечающий за сквозную.
 // функциональность.
-public class LoggingAndSecurityAspect {
+@Order(10)
+public class LoggingAspect {
     // Advice типы:
     // * Before - выполняется до метода с основной логикой;
     // * After returning - выполняется только после нормального окончания метода с основной логикой;
@@ -41,7 +43,7 @@ public class LoggingAndSecurityAspect {
     // себя все методы, кроме returnMagazine.
     private void allMethodsExceptReturnMagazineFromUniLibrary() {}
 
-    @Before("allGetMethodsFromUniLibrary()")  // Это pointcut - выражение, когда должен быть применён Advice.
+    @Before("aop.aspects.MyPointcuts.allGetMethods()")  // Это pointcut - выражение, когда должен быть применён Advice.
     // Если мы используем в качестве параметра кастомный класс, то требуется прописать его название полностью
     // (пакет + название класса).
     public void beforeGetLoggingAdvice() {  // Advice - это метод, который находится в Aspect-классе. Он определяет, что
