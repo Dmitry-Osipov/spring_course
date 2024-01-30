@@ -8,8 +8,10 @@ public class UniLibrary extends AbstractLibrary {
         System.out.println("Мы берём книгу из UniLibrary\n");
     }
 
-    public void returnBook() {
+    public String returnBook() {
+        int a = 10 / 0;
         System.out.println("Мы возвращаем книгу в UniLibrary\n");
+        return "Война и мир";
     }
 
     public void getMagazine() {
