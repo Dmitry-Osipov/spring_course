@@ -1,15 +1,22 @@
 package aop.aspects;
 
+import aop.Book;
+import org.aspectj.apache.bcel.classfile.Method;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 @Component
 @Aspect  // Аннотация говорит о том, что это не простой класс, а Aspect. Aspect - это класс, отвечающий за сквозную.
 // функциональность.
-@Order(10)
+@Order(10)  // Order обычно указывают не по прямому порядку (1, 2, 3), а, например, 10, 20, 30, чтобы можно было
+// вместить между уже сделанными аспектами ещё один аспект, а не переписывать Order'ы других классов.
 public class LoggingAspect {
     // Advice типы:
     // * Before - выполняется до метода с основной логикой;
@@ -28,8 +35,8 @@ public class LoggingAspect {
 
     @Pointcut("execution(* aop.UniLibrary.get*())")  // При смене pointcut выражения его требуется поменять лишь здесь,
     // ибо всё, что ниже прописано с именем данного метода - лишь ссылки.
-    private void allGetMethodsFromUniLibrary() {}  // Объявили pointcut. Плюсы такого подхода: возможность использования созданного
-    // pointcut для множества advice; возможность быстрого изменения pointcut выражения для множества advice;
+    private void allGetMethodsFromUniLibrary() {}  // Объявили pointcut. Плюсы такого подхода: возможность использования
+    // созданного pointcut для множества advice; возможность быстрого изменения pointcut выражения для множества advice;
     // возможность комбинирования pointcut.
     @Pointcut("execution(* aop.UniLibrary.return*())")
     private void allReturnMethodsFromUniLibrary() {}
@@ -43,11 +50,30 @@ public class LoggingAspect {
     // себя все методы, кроме returnMagazine.
     private void allMethodsExceptReturnMagazineFromUniLibrary() {}
 
-    @Before("aop.aspects.MyPointcuts.allGetMethods()")  // Это pointcut - выражение, когда должен быть применён Advice.
+    @Before("aop.aspects.MyPointcuts.allAddMethods()")  // Это pointcut - выражение, когда должен быть применён Advice.
     // Если мы используем в качестве параметра кастомный класс, то требуется прописать его название полностью
     // (пакет + название класса).
-    public void beforeGetLoggingAdvice() {  // Advice - это метод, который находится в Aspect-классе. Он определяет, что
-        // должно произойти при вызове метода getBook.
+    public void beforeAddLoggingAdvice(JoinPoint joinPoint) {  // Advice - это метод, который находится в Aspect-классе.
+        // Он определяет, что должно произойти при вызове метода getBook.
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        System.out.println("methodSignature = " + methodSignature);
+        System.out.println("methodSignature.getMethod() = " + methodSignature.getMethod());
+        System.out.println("methodSignature.getReturnType() = " + methodSignature.getReturnType());
+        System.out.println("methodSignature.getName() = " + methodSignature.getName());
+
+        if (methodSignature.getName().equals("addBook")) {
+            Object[] arguments = joinPoint.getArgs();
+            for (Object obj : arguments) {
+                if (obj instanceof Book) {
+                    Book myBook = (Book) obj;
+                    System.out.println("Информация о книге: название - " + myBook.getName() + ", автор - " +
+                            myBook.getAuthor() + ", год издания - " + myBook.getYearOfPublication());
+                } else if (obj instanceof String) {
+                    System.out.println("Книгу в библиотеку добавляет " + obj);
+                }
+            }
+        }
+
         System.out.println("beforeGetLoggingAdvice: writing Log #1");
     }
 

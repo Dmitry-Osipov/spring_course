@@ -20,7 +20,7 @@ public class UniLibrary extends AbstractLibrary {
         System.out.println("Мы возвращаем журнал в UniLibrary\n");
     }
 
-    public void addBook() {
+    public void addBook(String personName, Book book) {
         System.out.println("Мы добавляем книгу в UniLibrary\n");
     }
 
