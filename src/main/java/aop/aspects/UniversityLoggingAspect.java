@@ -1,6 +1,7 @@
 package aop.aspects;
 
 import aop.Student;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -19,7 +20,7 @@ public class UniversityLoggingAspect {
     }
 
     @AfterReturning(pointcut = "execution(* getStudents())", returning = "students")  // С помощью AfterReturning можно
-    // менять возвращаемый результат метода.
+    // менять возвращаемый результат метода. Отрабатывает только после успешного завершения метода.
     public void afterReturningGetStudentsLoggingAdvice(List<Student> students) {  // Название returning должно совпадать
         // с именем параметра.
         Student firstStudent = students.getFirst();
@@ -36,8 +37,16 @@ public class UniversityLoggingAspect {
     }
 
     @AfterThrowing(pointcut = "execution(* getStudents())", throwing = "exception")  // Обработать исключение здесь
-    // невозможно.
+    // невозможно. Отрабатывает только после выбрасывания исключения.
     public void afterThrowingGetStudentsLoggingAdvice(Throwable exception) {
         System.out.println("afterThrowingGetStudentsLoggingAdvice: логируем выброс исключения " + exception);
+    }
+
+    @After("execution(* getStudents())") // С помощью этой аннотации невозможно получить доступ к исключению, которое
+    // было выброшено из метода с основной логикой. Также невозможно получить доступ к возвращаемому методом результату.
+    // Отрабатывает после работы метода (вне зависимости, был ли метод завершён успешно или вылетело исключение).
+    public void afterGetStudentsLoggingAdvice() {
+        System.out.println("afterGetStudentsLoggingAdvice: логируем нормальное окончание работы метода или выброс " +
+                "исключения");
     }
 }
