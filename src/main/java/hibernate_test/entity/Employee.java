@@ -1,9 +1,11 @@
 package hibernate_test.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /*
 Entity класс - это Java класс, который отображает информацию определённой таблицы в БД.
@@ -13,19 +15,20 @@ POJO (Plain Old Java Object) - класс, удовлетворяющий ряд
 аргументов и т.д.
  */
 @Entity  // Эта аннотация говорит о том, что данный класс будет иметь отображение в БД.
-@Table(name="employees")  // Эта аннотация говорит о том, к какой именно таблице мы привязываем класс.
+@Table(name = "employees")  // Эта аннотация говорит о том, к какой именно таблице мы привязываем класс.
 public class Employee {
     @Id  // Эта аннотация говорит о то, что в таблице столбец, связанный с данным полем, является Primary Key.
-    @Column(name="id")  // Эта аннотация говорит о том, к какому именно столбцу из таблицы мы привязываем поле класса.
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")  // Эта аннотация говорит о том, к какому именно столбцу из таблицы мы привязываем поле класса.
     private int id;
-    @Column(name="name")  // Для аннотаций Table и Column можно не указывать атрибут name, если мы понимаем, что
+    @Column(name = "name")  // Для аннотаций Table и Column можно не указывать атрибут name, если мы понимаем, что
     // таблица или столбцы таблицы называются точно так же.
     private String name;
-    @Column(name="surname")
+    @Column(name = "surname")
     private String surname;
-    @Column(name="department")
+    @Column(name = "department")
     private String department;
-    @Column(name="salary")
+    @Column(name = "salary")
     private int salary;
 
     public Employee() {
