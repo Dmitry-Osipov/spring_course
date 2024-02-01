@@ -21,9 +21,9 @@ public class Test1 {
             // Session - это обёртка вокруг подключения к БД с помощью JDBC.
             Session session = factory.getCurrentSession();
 
-            Employee emp = new Employee("Dmitry", "Osipov", "IT", 500);
+            Employee emp = new Employee("Alex", "Smirnov", "Sales", 300);
             session.beginTransaction();  // Всегда при любых действиях сначала открываем транзакцию.
-            session.save(emp);  // Выполняем какие-либо действия.
+            session.persist(emp);  // Выполняем какие-либо действия.
             session.getTransaction().commit();  // Всегда при любых действиях в конце закрываем транзакцию.
         }
     }
