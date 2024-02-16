@@ -3,6 +3,7 @@ package hibrenate_one_to_many.bi.entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,8 +26,10 @@ public class Department {
     private int minSalary;
     @Column(name = "max_salary")
     private int maxSalary;
-    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
-            mappedBy = "department")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department", fetch = FetchType.LAZY)
+    // Разница между загрузками:
+    // EAGER - загружает сразу все связанные сущности, нетерпеливая загрузка;
+    // LAZY - загружает связанные сущности при необходимости, ленивая загрузка.
     private List<Employee> emps;
 
     public Department() {
