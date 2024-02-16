@@ -1,4 +1,4 @@
-package hibernate_test2.entity;
+package hibrenate_one_to_many.bi.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -7,7 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,22 +21,18 @@ public class Employee {
     private String name;
     @Column(name = "surname")
     private String surname;
-    @Column(name = "department")
-    private String department;
     @Column(name = "salary")
     private int salary;
-    @OneToOne(cascade = CascadeType.ALL)  // Аннотация указывает на связь один к одному между объектами с типом
-    // каскадной операции.
-    @JoinColumn(name = "details_id")  // Аннотация указывает на столбец, который осуществляет связь с другим объектом.
-    private Detail empDetail;
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "department_id")
+    private Department department;
 
     public Employee() {
     }
 
-    public Employee(String name, String surname, String department, int salary) {
+    public Employee(String name, String surname, int salary) {
         this.name = name;
         this.surname = surname;
-        this.department = department;
         this.salary = salary;
     }
 
@@ -64,14 +60,6 @@ public class Employee {
         this.surname = surname;
     }
 
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
     public int getSalary() {
         return salary;
     }
@@ -80,12 +68,12 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Detail getEmpDetail() {
-        return empDetail;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setEmpDetail(Detail empDetail) {
-        this.empDetail = empDetail;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     @Override
@@ -94,7 +82,6 @@ public class Employee {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", department='" + department + '\'' +
                 ", salary=" + salary +
                 '}';
     }
