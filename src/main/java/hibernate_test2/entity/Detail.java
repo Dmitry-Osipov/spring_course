@@ -1,10 +1,12 @@
 package hibernate_test2.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,6 +22,10 @@ public class Detail {
     private String phoneNumber;
     @Column(name = "email")
     private String email;
+    @OneToOne(mappedBy = "empDetail", cascade = CascadeType.ALL)  // Не нужно прописывать JoinColumn,
+    // т.к. мы это уже прописали в классе Employee. В mappedBy мы говорим, что связь между классами уже налажена и
+    // её следует искать в поле empDetail.
+    private Employee employee;
 
     public Detail() {
     }
@@ -60,6 +66,14 @@ public class Detail {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     @Override
